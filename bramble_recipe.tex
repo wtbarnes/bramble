@@ -1,0 +1,43 @@
+\documentclass[12pt,preprint]{aastex}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb,amsmath}
+\usepackage{epstopdf}
+\usepackage{listings}
+\usepackage{soul,color}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\begin{document}
+\title{Raspberry Bramble Recipe Book\\ Homemade Raspberry Pi Computing Cluster}
+\author{W. T. Barnes \and J. D. Brandenburg}
+\affil{Dept. of Physics and Astronomy, Rice University, Houston, TX 77251}
+
+This document gives instructions for setting up a computing cluster composed of the recently popular credit-card sized Raspberry Pi computers. Users may wish to run the ``head node" as a more powerful desktop machine or have the ``bramble" composed entirely of Pi boards, with the head node also being a Pi. An illustration of possible configurations is seen in Fig. 1 ({\bf REFERENCE FIGURE HERE})
+\section{Raspberry Pi Computer}
+\section{The TORQUE Resource Manager}
+\subsection{Dependencies}
+In the Linux environment, TORQUE has several dependencies that tend to not be included in vanilla Linux distributions. Note that these problems have been encountered in Ubuntu 14.04 and Raspbian 3.18. A potentially incomplete list of dependencies is as follows:
+\begin{itemize}
+\item libssl-dev (listed by TORQUE as openssl-devel),
+\item libxml2-dev.
+\end{itemize}
+Both can be obtained through the Aptitude package manager.
+\subsection{Installation}
+The latest build of TORQUE can be obtained \href{http://www.adaptivecomputing.com/products/open-source/torque/}{here}. Download the compressed source build of whatever version you prefer. At the time this document was written, version \texttt{4.2.x} is the most current, stable version. To build and install, run the following commands in the unpacked tarball:
+\begin{lstlisting}[frame=single,language=bash]
+$./configure 
+$sudo make 
+$sudo make install
+\end{lstlisting}
+This second step should take some time given the limits on the computational power of the Pi. The next step is to create the server. Create the server on the node that will serve as the ``head node," the Pi (or otherwise) that will manage all of the slave nodes and also likely provide login and storage services to all users. To create the server, run
+\begin{lstlisting}[frame=single,language=bash]
+$sudo pbs_server -t create
+\end{lstlisting} 
+This configures the initial TORQUE setup and need only be run once. Running it again will delete the server you have set up and reset all parameters.
+\section{NFS Shared Mounted Drive}
+\section{LDAP User Authentication}
+\end{document}  
