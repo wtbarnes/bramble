@@ -29,6 +29,9 @@ Each card is running the [Raspbian Jessie Lite OS](https://www.raspberrypi.org/d
 * Set keyboard to English (US)
 * Set the hostname appropriately
 
+You can make this process relatively easy by just flashing the same image on every 
+client.
+
 ## DHCP Host/Client Configuration
 We need to configure one Pi as a DHCP host (`pi-plate`). I've used the instructions found [here](https://www.raspberrypi.org/learning/networking-lessons/lesson-3/plan/).
 
@@ -74,6 +77,14 @@ and enable NAT,
 ```
 $ sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
+In order for these options to persist upon rebooting, save the iptables options,
+```shell
+sudo /sbin/iptables-save > /etc/iptables.ipv4.nat
+```
+and then reload on startup by adding the following line at the end of `/etc/rc.local`,
+```
+/sbin/iptables-restore < /etc/iptables.ipv4.nat
+```
 
 ## Ansible
 [Ansible](http://docs.ansible.com/ansible/) is a tool for managing many servers easily. We only need to install Ansible on the host,
@@ -84,7 +95,10 @@ $ sudo apt-get install ansible
 
 ## Shared Filesystem
 
+## SLURM
+
 ## TORQUE/PBS
+Proably use SLURM instead. Below are some outdated instructions.
 * On the head node
   * Download torque (from Adaptive computing)
   * Need libssl-dev and libxml2-dev to configure
