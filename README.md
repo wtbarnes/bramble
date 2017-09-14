@@ -86,6 +86,20 @@ and then reload on startup by adding the following line at the end of `/etc/rc.l
 /sbin/iptables-restore < /etc/iptables.ipv4.nat
 ```
 
+To avoid having to repeat these last two steps each time the host Pi restarts, add the line 
+```
+net.ipv4.ip_forward=1
+```
+to the file `/etc/sysctl.conf`. Then, save the iptables configuration by first copying it to a file,
+```
+sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+```
+and then telling the network service to reload this configuration each time the interface is brought up by adding the line
+```
+up iptables-restore < /etc/iptables.ipv4.nat
+```
+to `/etc/network/interfaces`. These steps were found in [this post](http://raspberrypihq.com/how-to-turn-a-raspberry-pi-into-a-wifi-router/).
+
 ## Ansible
 [Ansible](http://docs.ansible.com/ansible/) is a tool for managing many servers easily. We only need to install Ansible on the host,
 
